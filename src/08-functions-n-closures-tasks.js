@@ -21,10 +21,13 @@
  *
  * @example
  *   getComposition(Math.sin, Math.asin)(x) => Math.sin(Math.asin(x))
+ *  getComposition(f1,f2)(x)
  *
  */
-function getComposition(/* f, g */) {
-  throw new Error('Not implemented');
+function getComposition(f, g) {
+  return function func(x) {
+    return f(g(x));
+  };
 }
 
 
@@ -44,8 +47,10 @@ function getComposition(/* f, g */) {
  *   power05(16) => 4
  *
  */
-function getPowerFunction(/* exponent */) {
-  throw new Error('Not implemented');
+function getPowerFunction(exponent) {
+  return function func(x) {
+    return x ** exponent;
+  };
 }
 
 
@@ -62,8 +67,18 @@ function getPowerFunction(/* exponent */) {
  *   getPolynom(8)     => y = 8
  *   getPolynom()      => null
  */
-function getPolynom() {
-  throw new Error('Not implemented');
+function getPolynom(...args) {
+  const [a, b, c] = args;
+  if (a && b && c) {
+    return (x) => a * x ** 2 + b * x + c;
+  }
+  if (a && b) {
+    return (x) => a * x + b;
+  }
+  if (a) {
+    return () => a;
+  }
+  return null;
 }
 
 
@@ -81,8 +96,14 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(func) {
+  let cache;
+  return function f() {
+    if (!cache) {
+      cache = func();
+    }
+    return cache;
+  };
 }
 
 
@@ -147,8 +168,10 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(/* fn, ...args1 */) {
-  throw new Error('Not implemented');
+function partialUsingArguments(fn, ...args1) {
+  return function func(...args) {
+    return fn.apply(this, [...args1, ...args]);
+  };
 }
 
 
@@ -169,8 +192,12 @@ function partialUsingArguments(/* fn, ...args1 */) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let count = startFrom - 1;
+  return function func() {
+    count += 1;
+    return count;
+  };
 }
 
 
